@@ -1,4 +1,6 @@
 #include "graphics.hpp"
+#include <thread>
+#include <chrono>
 
 int main() {
 	
@@ -44,23 +46,22 @@ int main() {
 		double angle = M_PI / 3, temp_angle = M_PI / 3;
 		
 		while (angle < 2 * 3.14 + 1 && flag) {
+			DrawVector(&r, &window, 0xff0000 , 0.25);
+			r.RightRotate(temp_angle);
+			angle += temp_angle;
+			std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
 			window.display();
 			window.clear(sf::Color::White);
 			firstPlot.Draw (&window);
 			secondPlot.Draw(&window);
-			DrawVector(&r, &window, 0xFF0000 , 0.25);
-			r.RightRotate(temp_angle);
-			angle += temp_angle;
-			for (long long int i = 0; i < 1000000000; ++i); //ping
 		}
 
 		if (flag) {
-			DrawVector(&a, &window, 0x00FF00, 0.25);
-			for (long long int i = 0; i < 1000000000; ++i);
-			DrawVector(&b, &window, 0x0000FF, 0.25);
-			for (long long int i = 0; i < 1000000000; ++i);
-			DrawVector(&c, &window, 0xFF00FF, 0.25);
-			for (long long int i = 0; i < 1000000000; ++i);
+			DrawVector(&a, &window, 0x00ff00, 0.25);
+			DrawVector(&b, &window, 0x0000ff, 0.25);
+			DrawVector(&c, &window, 0x0f0fff, 0.25);
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 			window.display();
 		}
 		flag = 0;
