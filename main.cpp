@@ -39,16 +39,18 @@ int main() {
 
 		double angle = M_PI / 50, temp_angle = M_PI / 50;
 		while (angle < 2 * M_PI) {
+			window.clear(sf::Color::White);
 			DrawVector(&r, &window, 0xFFFFFF, 0.25);
+			firstPlot.Draw(&window);
+			secondPlot.Draw(&window);
+			window.display();
 			r.RightRotate(temp_angle);
 			angle += temp_angle;
+			std::this_thread::sleep_for(std::chrono::milliseconds(200));
 		}
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(200));
-
-		void DrawVector(Vector_t *vector, sf::RenderWindow *window,int color, double fraction);
-		firstPlot.Draw(&window);
-		secondPlot.Draw(&window);
+		
         window.display();
     }
 
