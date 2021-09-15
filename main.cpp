@@ -24,11 +24,12 @@ int main() {
 	Vector_t r(0.25 * scrX , 0.5 * scrY, 0, 200);
 
 	window.clear(sf::Color::White);
+	firstPlot.Draw (&window);
+	secondPlot.Draw(&window);
 	window.display();
 	window.clear(sf::Color::White);
 	firstPlot.Draw (&window);
 	secondPlot.Draw(&window);
-
 
 	int flag = 1;
 	
@@ -41,7 +42,7 @@ int main() {
         }
 
 		double angle = M_PI / 3, temp_angle = M_PI / 3;
-		//window.clear(sf::Color::White);
+		
 		while (angle < 2 * 3.14 + 1 && flag) {
 			window.display();
 			window.clear(sf::Color::White);
@@ -50,13 +51,16 @@ int main() {
 			DrawVector(&r, &window, 0xFF0000 , 0.25);
 			r.RightRotate(temp_angle);
 			angle += temp_angle;
-			for (long long int i = 0; i < 1000000000; ++i);
+			for (long long int i = 0; i < 1000000000; ++i); //ping
 		}
 
 		if (flag) {
 			DrawVector(&a, &window, 0x00FF00, 0.25);
+			for (long long int i = 0; i < 1000000000; ++i);
 			DrawVector(&b, &window, 0x0000FF, 0.25);
+			for (long long int i = 0; i < 1000000000; ++i);
 			DrawVector(&c, &window, 0xFF00FF, 0.25);
+			for (long long int i = 0; i < 1000000000; ++i);
 			window.display();
 		}
 		flag = 0;

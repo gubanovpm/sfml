@@ -1,5 +1,3 @@
-// TODO color in drawVector
-
 #include <SFML/Graphics.hpp>
 #include <Windows.h>
 
