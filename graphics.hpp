@@ -1,3 +1,5 @@
+// TODO color in drawVector
+
 #include <SFML/Graphics.hpp>
 #include <Windows.h>
 
@@ -42,8 +44,8 @@ class Plot_t {
 //----------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------
 		void Draw(sf::RenderWindow *window) {
-			DrawVector(this->Ordinate, window, 0x000000, 0.05);
-			DrawVector(this->Abscissa, window, 0x000000, 0.05);
+			DrawVector(this->Ordinate, window, this->Color, 0.05);
+			DrawVector(this->Abscissa, window, this->Color, 0.05);
 
 			Point_t centreP(this->Abscissa->GetStartingPoint()->x , this->Abscissa->GetStartingPoint()->y);
 			Point_t endAbs (this->Abscissa->GetStartingPoint()->x + this->Abscissa->GetX(), 
@@ -74,7 +76,7 @@ class Plot_t {
 				tempSecondP.x = xCoord + botStreak.GetX();
 				tempSecondP.y = yCoord + botStreak.GetY();
 
-				division = CreateSegment(&tempFirstP, &tempSecondP, 0x000000);
+				division = CreateSegment(&tempFirstP, &tempSecondP, this->Color);
 				window->draw(*division);
 				delete division;
 				lambda += 1./11;
@@ -96,7 +98,7 @@ class Plot_t {
 				tempSecondP.x = xCoord + botStreak.GetX();
 				tempSecondP.y = yCoord + botStreak.GetY();
 
-				division = CreateSegment(&tempFirstP, &tempSecondP, 0x000000);
+				division = CreateSegment(&tempFirstP, &tempSecondP, this->Color);
 				window->draw(*division);
 				delete division;
 				lambda += 1./11;
@@ -122,10 +124,10 @@ sf::VertexArray *CreateSegment (Point_t *First, Point_t *Second, int color) {
 		perror("Bad allocation");
 	}
 	(*segment)[0].position = sf::Vector2f(First->x,   First->y);
-	(*segment)[0].color = sf::Color(color & 0xFF0000, color & 0xFF00, color & 0xFF);
+	(*segment)[0].color = sf::Color((color & 0xFF0000) >> 16, (color & 0xFF00) >> 8, color & 0xFF);
 	
 	(*segment)[1].position = sf::Vector2f(Second->x, Second->y);
-	(*segment)[1].color = sf::Color(color & 0xFF0000, color & 0xFF00, color & 0xFF);
+	(*segment)[1].color = sf::Color((color & 0xFF0000) >> 16, (color & 0xFF00) >> 8, color & 0xFF);
 	return segment;
 }
 
@@ -138,10 +140,10 @@ sf::VertexArray *CreateSegment (const Point_t *First,const Point_t *Second, int 
 		perror("Bad allocation");
 	}
 	(*segment)[0].position = sf::Vector2f(First->x,   First->y);
-	(*segment)[0].color = sf::Color(color & 0xFF0000, color & 0xFF00, color & 0xFF);
+	(*segment)[0].color = sf::Color((color & 0xFF0000) >> 16, (color & 0xFF00) >> 8, color & 0xFF);
 	
 	(*segment)[1].position = sf::Vector2f(Second->x, Second->y);
-	(*segment)[1].color = sf::Color(color & 0xFF0000, color & 0xFF00, color & 0xFF);
+	(*segment)[1].color = sf::Color((color & 0xFF0000) >> 16, (color & 0xFF00) >> 8, color & 0xFF);
 	return segment;
 }
 //----------------------------------------------------------------------------------------------------------
