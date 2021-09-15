@@ -22,7 +22,7 @@ int main() {
 	Vector_t b(0.55 * scrX, 0.85 * scrY, 50, -100);
 	Vector_t c = a + b;
 
-	Vector_t r(0.5 * scrX , 0.5 * scrY, 0, 200);
+	Vector_t r(0.25 * scrX , 0.5 * scrY, 0, 200);
 	
 	while (window.isOpen()) {
         sf::Event event;
