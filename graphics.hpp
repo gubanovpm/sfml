@@ -10,9 +10,10 @@
 //----------------------------------------------------------------------------------------------------------
 sf::VertexArray *CreateSegment(Point_t *First, Point_t *Second, int color);
 sf::VertexArray *CreateSegment (Vector_t *vector, int color);
-//----------------------------------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------------------------------`
+
 void DrawVector(Vector_t *vector, sf::RenderWindow *window, int color, double fracion);
+
+int oneStep(double x);
 //----------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------`
 class Plot_t {
@@ -51,7 +52,12 @@ class Plot_t {
 			Point_t endOrd (this->Ordinate->GetStartingPoint()->x + this->Ordinate->GetX(), 
 							this->Ordinate->GetStartingPoint()->y + this->Ordinate->GetY());
 			
-			double lambda = 1./11;
+			int oneStepAbscissa   = oneStep(MaxElemX);
+			int oneStepOrdinate   = oneStep(MaxElemY);
+			int countStepAbscissa = (MaxElemX + oneStepAbscissa - 1) / oneStepAbscissa;
+			int countStepOrdinate = (MaxElemY + oneStepOrdinate - 1) / oneStepOrdinate;
+
+			double lambda = 1./(countStepAbscissa + 1);
 			double xCoord = 0;
 			double yCoord = 0;
 			Vector_t topStreak;
@@ -60,7 +66,7 @@ class Plot_t {
 
 			sf::VertexArray *division;
 
-			for (int i = 0; i < 10; ++i) {
+			for (int i = 0; i < countStepAbscissa; ++i) {
 				xCoord = centreP.x + (endAbs.x - centreP.x) * lambda;
 				yCoord = centreP.y + (endAbs.y - centreP.y) * lambda;
 
@@ -77,12 +83,12 @@ class Plot_t {
 				division = CreateSegment(&tempFirstP, &tempSecondP, this->Color);
 				window->draw(*division);
 				delete division;
-				lambda += 1./11;
+				lambda += 1./(countStepAbscissa + 1);
 			}
 
-			lambda = 1./11;
+			lambda = 1./(countStepOrdinate + 1);
 
-			for (int i = 0; i < 10; ++i) {
+			for (int i = 0; i < countStepOrdinate; ++i) {
 				xCoord = centreP.x + (endOrd.x - centreP.x) * lambda;
 				yCoord = centreP.y + (endOrd.y - centreP.y) * lambda;
 
@@ -99,7 +105,7 @@ class Plot_t {
 				division = CreateSegment(&tempFirstP, &tempSecondP, this->Color);
 				window->draw(*division);
 				delete division;
-				lambda += 1./11;
+				lambda += 1./(countStepOrdinate + 1);
 			}
 		}
 //----------------------------------------------------------------------------------------------------------
@@ -183,3 +189,8 @@ void DrawVector(Vector_t *vector, sf::RenderWindow *window,int color, double fra
 }
 //----------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------
+int oneStep (double x) {
+	int k = 1, mult = 2;
+	for (; k *10 < x; k *= (7 - mult), mult = (7-mult));
+	return k;
+}
