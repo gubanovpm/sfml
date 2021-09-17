@@ -1,8 +1,12 @@
+//TODO пунктирная(координатная сетка) линия на графике
+//TODO разобраться с const
+
 #include <SFML/Graphics.hpp>
 #include <Windows.h>
 
 #include <iostream>
 #include <cstdlib>
+#include <string>
 #include <cmath>
 
 #include "vector.hpp"
@@ -15,30 +19,19 @@ void DrawVector(Vector_t *vector, sf::RenderWindow *window, int color, double fr
 
 int oneStep(double x);
 //----------------------------------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------------------------------`
+//----------------------------------------------------------------------------------------------------------
 class Plot_t {
 	public:
-		Plot_t(Point_t Centre, Point_t Abs, Point_t Ord, int MaxElemX, int MaxElemY, int color) {
-			this->Ordinate = new Vector_t(Centre, Ord);
-			this->Abscissa = new Vector_t(Centre, Abs);
-			this->MaxElemX = MaxElemX;
-			this->MaxElemY = MaxElemY;
-			this->Color    = color;
-		}
-//----------------------------------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------------------------------`
-		Plot_t(Vector_t *Abscissa, Vector_t *Ordinate, int MaxElemX, int MaxElemY, int color) {
-			this->Ordinate = Ordinate;
-			this->Abscissa = Abscissa;
-			this->MaxElemX = MaxElemX;
-			this->MaxElemY = MaxElemY;
-			this->Color    = color;
-		}
+		Plot_t(Vector_t *Abscissa, Vector_t *Ordinate, int MaxElemX, int MaxElemY, int color):
+			Ordinate(Ordinate), 
+			Abscissa(Abscissa), 
+			MaxElemX(MaxElemX), 
+			MaxElemY(MaxElemY), 
+			Color(color) {
+		};
 //----------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------
 		~Plot_t() {
-			delete this->Ordinate;
-			delete this->Abscissa;
 		}
 //----------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------
@@ -66,6 +59,19 @@ class Plot_t {
 
 			sf::VertexArray *division;
 
+			sf::Text currentValue;
+			currentValue.setCharacterSize(12);
+			sf::Font font;
+			font.loadFromFile("Sansation_Bold.ttf");
+			currentValue.setFont(font);
+			//text.setString(std::string("Hello World!"));
+			//text.setColor(sf::Color(0xff, 0x00, 0x00));
+			//text.setStyle(sf::Text::Bold);
+			//sf::Font font;
+			//font.loadFromFile("Sansation_Bold.ttf");
+			//text.setFont(font);
+			//window->draw(text);
+
 			for (int i = 0; i < countStepAbscissa; ++i) {
 				xCoord = centreP.x + (endAbs.x - centreP.x) * lambda;
 				yCoord = centreP.y + (endAbs.y - centreP.y) * lambda;
@@ -82,6 +88,13 @@ class Plot_t {
 
 				division = CreateSegment(&tempFirstP, &tempSecondP, this->Color);
 				window->draw(*division);
+
+				currentValue.setString(std::to_string((i + 1) * oneStepAbscissa));
+				currentValue.setColor(sf::Color((Color & 0xFF0000) >> 16, (Color & 0xFF00) >> 8, Color & 0xFF));
+				currentValue.setStyle(sf::Text::Bold);
+				currentValue.move(xCoord - 6, yCoord + 3);
+				window->draw(currentValue);
+				currentValue.move(-xCoord + 6, -yCoord - 3);
 				delete division;
 				lambda += 1./(countStepAbscissa + 1);
 			}
@@ -104,6 +117,14 @@ class Plot_t {
 
 				division = CreateSegment(&tempFirstP, &tempSecondP, this->Color);
 				window->draw(*division);
+
+				currentValue.setString(std::to_string((i + 1) * oneStepOrdinate));
+				currentValue.setColor(sf::Color((Color & 0xFF0000) >> 16, (Color & 0xFF00) >> 8, Color & 0xFF));
+				currentValue.setStyle(sf::Text::Bold);
+				currentValue.move(xCoord - 24, yCoord - 6);
+				window->draw(currentValue);
+				currentValue.move(-xCoord + 24, -yCoord + 6);
+
 				delete division;
 				lambda += 1./(countStepOrdinate + 1);
 			}

@@ -6,8 +6,7 @@ int main() {
 	
 	int scrX = 0.95 * GetSystemMetrics(SM_CXSCREEN); //Разрешение экрана по X
 	int scrY = 0.95 * GetSystemMetrics(SM_CYSCREEN); //Разрешение экрана по Y
-	sf::RenderWindow window(sf::VideoMode(scrX, scrY), "Brand new Grapher");
-	
+	sf::RenderWindow window(sf::VideoMode(scrX, scrY), "Brand new Grapher");	
 	int firstPlotColor  = 0x000000;
 	int secondPlotColor = 0x000000;
 
@@ -47,7 +46,7 @@ int main() {
 		
 		while (angle < 2 * 3.14 + 1 && flag) {
 			DrawVector(&r, &window, 0xff0000 , 0.25);
-			r.RightRotate(temp_angle);
+			r.LeftRotate(temp_angle);
 			angle += temp_angle;
 			std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
